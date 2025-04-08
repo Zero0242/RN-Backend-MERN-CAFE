@@ -16,8 +16,10 @@ router.put('/:coleccion/:id', [
     check('id','El id debe de ser de mongo').isMongoId(),
     check('coleccion').custom( c => coleccionesPermitidas( c, ['usuarios','productos'] ) ),
     validarCampos
-], actualizarImagenCloudinary )
-// ], actualizarImagen )
+],
+    // * Usar la implementación de express-upload si es que no existe una key de cloudinary
+    process.env.CLOUDINARY_URL ? actualizarImagenCloudinary : actualizarImagen
+);
 
 router.get('/:coleccion/:id', [
     check('id','El id debe de ser de mongo').isMongoId(),
