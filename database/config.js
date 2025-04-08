@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { Role } = require('../models');
 
 
 
@@ -23,8 +24,22 @@ const dbConnection = async() => {
 
 }
 
+const setupDefaultRoles = async () => {
+    const results = await Role.find()
+    const isEmpty = results.length < 1;
+    if (isEmpty) {
+        const adminRol = new Role({ rol: 'ADMIN_ROLE' })
+        const userRol = new Role({ rol: 'USER_ROLE' })
+        await adminRol.save()
+        await userRol.save()
+    }
+    console.log('ROLES ENABLED')
+}
+
+
 
 
 module.exports = {
-    dbConnection
+    dbConnection,
+    setupDefaultRoles,
 }

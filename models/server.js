@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 
-const { dbConnection } = require('../database/config');
+const { dbConnection, setupDefaultRoles } = require('../database/config');
 
 class Server {
 
@@ -32,6 +32,7 @@ class Server {
 
     async conectarDB() {
         await dbConnection();
+        await setupDefaultRoles()
     }
 
 
