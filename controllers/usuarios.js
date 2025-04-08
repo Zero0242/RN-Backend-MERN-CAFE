@@ -5,6 +5,14 @@ const bcryptjs = require('bcryptjs');
 const Usuario = require('../models/usuario');
 const { generarJWT } = require('../helpers');
 
+const getUsuarioPorId = async(req = request, res = response) => {
+
+    const { id } = req.params;
+
+    const usuario = await Usuario.findById( id );
+
+    res.json(usuario);
+}
 
 
 const usuariosGet = async(req = request, res = response) => {
@@ -49,7 +57,7 @@ const usuariosPost = async(req, res = response) => {
 const usuariosPut = async(req, res = response) => {
 
     const { id } = req.params;
-    const { _id, password, google, correo, ...resto } = req.body;
+    const { _id, password, google, ...resto } = req.body;
 
     if ( password ) {
         // Encriptar la contraseña
@@ -57,7 +65,7 @@ const usuariosPut = async(req, res = response) => {
         resto.password = bcryptjs.hashSync( password, salt );
     }
 
-    const usuario = await Usuario.findByIdAndUpdate( id, resto );
+    const usuario = await Usuario.findByIdAndUpdate( id, resto, { new: true } );
 
     res.json(usuario);
 }
@@ -86,4 +94,5 @@ module.exports = {
     usuariosPut,
     usuariosPatch,
     usuariosDelete,
+    getUsuarioPorId
 }
