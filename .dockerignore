@@ -1,0 +1,13 @@
+# Project Folders
+node_modules/
+.vscode/
+# App Folders
+uploads/productos/**.*
+uploads/usuarios/**.*
+# App Configurations
+.env
+.example.env
+.gitignore
+dockerfile
+docker-compose.yaml
+README.md

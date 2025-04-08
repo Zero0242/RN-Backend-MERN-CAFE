@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  # * ==========
+  # * Production
+  # * ==========
+  app:
+    profiles:
+      - production
+    depends_on:
+      - database
+    container_name: ServerApp
+    image: klerith/node-cafe:1.0.0
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      MONGODB_CNN: ${MONGODB_CNN}
+    restart: unless-stopped
+  
+  # * ==========
+  # * Services
+  # * ==========
+  database:
+    container_name: CafeDatabase
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+    restart: unless-stopped
+  database_panel:
+    depends_on:
+      - database
+    container_name: DatabasePanel
+    image: mongo-express:1.0.0-alpha.4
+    ports:
+      - "9001:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=CafeDatabase
+    restart: unless-stopped
+
+volumes:
+  mongodata:
+    external: false
