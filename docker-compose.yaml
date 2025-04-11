@@ -17,7 +17,7 @@ services:
     environment:
       MONGODB_CNN: ${MONGODB_CNN}
     restart: unless-stopped
-  
+
   # * ==========
   # * Services
   # * ==========
@@ -30,6 +30,8 @@ services:
       - mongodata:/data/db
     restart: unless-stopped
   database_panel:
+    profiles:
+      - debug
     depends_on:
       - database
     container_name: DatabasePanel
